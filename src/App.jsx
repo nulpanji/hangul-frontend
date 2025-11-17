@@ -23,7 +23,6 @@ function App() {
     { code: 'thai', name: '🇹🇭 ภาษาไทย', sample: 'สวัสดี คุณสบายดีไหม?' }
   ];
 
-  // 언어별 UI 텍스트
   const translations = {
     english: {
       title: '🌍 Learn Hangul',
@@ -125,7 +124,6 @@ function App() {
 
   const t = translations[language];
 
-  // 한글 자모 분해
   const decomposeHangul = (text) => {
     const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
     const JUNG = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
@@ -159,7 +157,6 @@ function App() {
     return result;
   };
 
-  // API로 변환
   const convertWithAPI = async () => {
     if (!input.trim()) return;
     
@@ -190,7 +187,6 @@ function App() {
     }
   };
 
-  // 타자기 애니메이션
   useEffect(() => {
     if (!animating || !hangul) return;
     
@@ -227,12 +223,12 @@ function App() {
         {!hangul && (
           <div className="h-full flex flex-col p-6">
             <h1 className="text-3xl font-bold text-white text-center mb-8">
-              🌍 한글 배우기
+              {t.title}
             </h1>
             
             <div className="mb-6">
               <label className="block text-white text-sm font-semibold mb-2">
-                언어 선택
+                {t.selectLanguage}
               </label>
               <select
                 value={language}
@@ -249,7 +245,7 @@ function App() {
 
             <div className="mb-6 flex-1">
               <label className="block text-white text-sm font-semibold mb-2">
-                문장 입력
+                {t.enterText}
               </label>
               <textarea
                 value={input}
@@ -267,15 +263,15 @@ function App() {
               {loading ? (
                 <>
                   <Loader className="animate-spin" size={24} />
-                  변환 중...
+                  {t.converting}
                 </>
               ) : (
-                '한글로 변환'
+                t.convert
               )}
             </button>
 
             <div className="mt-4 text-center text-gray-400 text-xs">
-              백엔드 서버 연결 필요
+              {t.backendNote}
             </div>
           </div>
         )}
@@ -301,7 +297,7 @@ function App() {
                   className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
                 >
                   <Play size={24} />
-                  애니메이션 시작
+                  {t.startAnimation}
                 </button>
               ) : (
                 <button
@@ -309,7 +305,7 @@ function App() {
                   className="w-full bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
                 >
                   <Pause size={24} />
-                  일시정지
+                  {t.pause}
                 </button>
               )}
               
@@ -318,7 +314,7 @@ function App() {
                 className="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
               >
                 <RotateCcw size={20} />
-                처음부터
+                {t.restart}
               </button>
               
               <button
@@ -329,7 +325,7 @@ function App() {
                 }}
                 className="w-full bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 rounded-lg transition-colors duration-200"
               >
-                새 문장
+                {t.newSentence}
               </button>
             </div>
           </div>
