@@ -33,8 +33,7 @@ function App() {
       startAnimation: 'Start Animation',
       pause: 'Pause',
       restart: 'Restart',
-      newSentence: 'New Sentence',
-      backendNote: 'Backend connection required'
+      newSentence: 'New Sentence'
     },
     spanish: {
       title: '🌍 Aprender Hangul',
@@ -269,10 +268,6 @@ function App() {
                 t.convert
               )}
             </button>
-
-            <div className="mt-4 text-center text-gray-400 text-xs">
-              {t.backendNote}
-            </div>
           </div>
         )}
 
