@@ -227,12 +227,12 @@ function App() {
         {!hangul && (
           <div className="h-full flex flex-col p-6">
             <h1 className="text-3xl font-bold text-white text-center mb-8">
-              {t.title}
+              🌍 한글 배우기
             </h1>
             
             <div className="mb-6">
               <label className="block text-white text-sm font-semibold mb-2">
-                {t.selectLanguage}
+                언어 선택
               </label>
               <select
                 value={language}
@@ -249,7 +249,7 @@ function App() {
 
             <div className="mb-6 flex-1">
               <label className="block text-white text-sm font-semibold mb-2">
-                {t.enterText}
+                문장 입력
               </label>
               <textarea
                 value={input}
@@ -267,15 +267,15 @@ function App() {
               {loading ? (
                 <>
                   <Loader className="animate-spin" size={24} />
-                  {t.converting}
+                  변환 중...
                 </>
               ) : (
-                t.convert
+                '한글로 변환'
               )}
             </button>
 
             <div className="mt-4 text-center text-gray-400 text-xs">
-              {t.backendNote}
+              백엔드 서버 연결 필요
             </div>
           </div>
         )}
@@ -301,7 +301,7 @@ function App() {
                   className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
                 >
                   <Play size={24} />
-                  {t.startAnimation}
+                  애니메이션 시작
                 </button>
               ) : (
                 <button
@@ -309,7 +309,7 @@ function App() {
                   className="w-full bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
                 >
                   <Pause size={24} />
-                  {t.pause}
+                  일시정지
                 </button>
               )}
               
@@ -318,7 +318,7 @@ function App() {
                 className="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
               >
                 <RotateCcw size={20} />
-                {t.restart}
+                처음부터
               </button>
               
               <button
@@ -329,7 +329,7 @@ function App() {
                 }}
                 className="w-full bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 rounded-lg transition-colors duration-200"
               >
-                {t.newSentence}
+                새 문장
               </button>
             </div>
           </div>
