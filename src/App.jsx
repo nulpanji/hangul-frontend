@@ -33,7 +33,8 @@ function App() {
       startAnimation: 'Start Animation',
       pause: 'Pause',
       restart: 'Restart',
-      newSentence: 'New Sentence'
+      newSentence: 'New Sentence',
+      backendNote: 'Backend connection required'
     },
     spanish: {
       title: '🌍 Aprender Hangul',
