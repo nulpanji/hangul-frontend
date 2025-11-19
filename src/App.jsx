@@ -8,7 +8,6 @@ function App() {
   const [translations, setTranslations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [animating, setAnimating] = useState(false);
-  const [currentLangIndex, setCurrentLangIndex] = useState(0);
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [displayTexts, setDisplayTexts] = useState([]);
 
@@ -19,7 +18,6 @@ function App() {
     { code: 'th', name: 'ภาษาไทย', flag: '🇹🇭' },
     { code: 'es', name: 'Español', flag: '🇪🇸' },
     { code: 'fr', name: 'Français', flag: '🇫🇷' },
-    { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
     { code: 'it', name: 'Italiano', flag: '🇮🇹' },
     { code: 'ko', name: '한국어', flag: '🇰🇷' }
   ];
@@ -65,7 +63,6 @@ function App() {
     setLoading(true);
     setTranslations([]);
     setDisplayTexts([]);
-    setCurrentLangIndex(0);
     setCurrentCharIndex(0);
     
     try {
@@ -118,14 +115,12 @@ function App() {
 
   const startAnimation = () => {
     setDisplayTexts(new Array(translations.length).fill(''));
-    setCurrentLangIndex(0);
     setCurrentCharIndex(0);
     setAnimating(true);
   };
 
   const resetAnimation = () => {
     setDisplayTexts(new Array(translations.length).fill(''));
-    setCurrentLangIndex(0);
     setCurrentCharIndex(0);
     setAnimating(false);
   };
@@ -140,7 +135,7 @@ function App() {
               🌍 Learn Hangul
             </h1>
             <p className="text-gray-400 text-center text-sm mb-8">
-              Type in English, see 9 languages in Hangul!
+              Type in English, see 8 languages in Hangul!
             </p>
             
             <div className="mb-6 flex-1">
@@ -174,19 +169,21 @@ function App() {
 
         {translations.length > 0 && (
           <div className="h-full flex flex-col">
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {translations.map((trans, index) => (
-                <div key={index} className="bg-gray-900 rounded-lg p-3 border border-gray-700">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-2xl">{languageOrder[index].flag}</span>
-                    <span className="text-gray-400 text-sm">{languageOrder[index].name}</span>
+            <div className="flex-1 overflow-y-auto p-3">
+              <div className="grid grid-cols-2 gap-2">
+                {translations.map((trans, index) => (
+                  <div key={index} className="bg-gray-900 rounded-lg p-2 border border-gray-700">
+                    <div className="flex items-center gap-1 mb-1">
+                      <span className="text-lg">{languageOrder[index].flag}</span>
+                      <span className="text-gray-400 text-xs">{languageOrder[index].name}</span>
+                    </div>
+                    <div className="text-white text-sm mb-1 line-clamp-2">{trans.text}</div>
+                    <div className="text-blue-400 text-lg font-bold leading-tight">
+                      {displayTexts[index] || (animating ? '' : trans.hangul)}
+                    </div>
                   </div>
-                  <div className="text-white text-lg mb-1">{trans.text}</div>
-                  <div className="text-blue-400 text-xl font-bold">
-                    {displayTexts[index] || (animating ? '' : trans.hangul)}
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
 
             <div className="p-4 space-y-2 border-t border-gray-700">
