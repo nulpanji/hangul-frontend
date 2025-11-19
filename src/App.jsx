@@ -8,7 +8,6 @@ function App() {
   const [translations, setTranslations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [animating, setAnimating] = useState(false);
-  const [currentLangIndex, setCurrentLangIndex] = useState(0);
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [displayTexts, setDisplayTexts] = useState([]);
 
@@ -65,7 +64,6 @@ function App() {
     setLoading(true);
     setTranslations([]);
     setDisplayTexts([]);
-    setCurrentLangIndex(0);
     setCurrentCharIndex(0);
     
     try {
@@ -91,46 +89,39 @@ function App() {
     }
   };
 
-  // 순차 애니메이션
+  // 동시 애니메이션
   useEffect(() => {
     if (!animating || translations.length === 0) return;
     
-    if (currentLangIndex >= translations.length) {
-      setAnimating(false);
-      return;
-    }
-
-    const currentTranslation = translations[currentLangIndex];
-    const decomposed = decomposeHangul(currentTranslation.hangul);
+    const allDecomposed = translations.map(t => decomposeHangul(t.hangul));
+    const maxLength = Math.max(...allDecomposed.map(d => d.length));
     
-    if (currentCharIndex < decomposed.length) {
+    if (currentCharIndex < maxLength) {
       const timer = setTimeout(() => {
         setDisplayTexts(prev => {
-          const newTexts = [...prev];
-          newTexts[currentLangIndex] = decomposed[currentCharIndex];
-          return newTexts;
+          return allDecomposed.map((decomposed, langIndex) => {
+            return currentCharIndex < decomposed.length 
+              ? decomposed[currentCharIndex] 
+              : decomposed[decomposed.length - 1];
+          });
         });
         setCurrentCharIndex(currentCharIndex + 1);
       }, 300);
       
       return () => clearTimeout(timer);
     } else {
-      // 다음 언어로
-      setCurrentLangIndex(currentLangIndex + 1);
-      setCurrentCharIndex(0);
+      setAnimating(false);
     }
-  }, [animating, currentLangIndex, currentCharIndex, translations]);
+  }, [animating, currentCharIndex, translations]);
 
   const startAnimation = () => {
     setDisplayTexts(new Array(translations.length).fill(''));
-    setCurrentLangIndex(0);
     setCurrentCharIndex(0);
     setAnimating(true);
   };
 
   const resetAnimation = () => {
     setDisplayTexts(new Array(translations.length).fill(''));
-    setCurrentLangIndex(0);
     setCurrentCharIndex(0);
     setAnimating(false);
   };
