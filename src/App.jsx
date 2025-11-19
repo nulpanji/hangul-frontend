@@ -118,7 +118,7 @@ function App() {
             if (item.currentStep < item.steps.length) {
               return {
                 ...item,
-                displayPronunciation: item.steps[item.currentStep],
+                displayPronunciation: item.steps.slice(0, item.currentStep + 1).join(''),
                 currentStep: item.currentStep + 1
               };
             }
