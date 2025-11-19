@@ -8,6 +8,7 @@ function App() {
   const [translations, setTranslations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [animating, setAnimating] = useState(false);
+  const [currentLangIndex, setCurrentLangIndex] = useState(0);
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [displayTexts, setDisplayTexts] = useState([]);
 
@@ -64,6 +65,7 @@ function App() {
     setLoading(true);
     setTranslations([]);
     setDisplayTexts([]);
+    setCurrentLangIndex(0);
     setCurrentCharIndex(0);
     
     try {
@@ -116,12 +118,14 @@ function App() {
 
   const startAnimation = () => {
     setDisplayTexts(new Array(translations.length).fill(''));
+    setCurrentLangIndex(0);
     setCurrentCharIndex(0);
     setAnimating(true);
   };
 
   const resetAnimation = () => {
     setDisplayTexts(new Array(translations.length).fill(''));
+    setCurrentLangIndex(0);
     setCurrentCharIndex(0);
     setAnimating(false);
   };
