@@ -4,125 +4,25 @@ import { Play, Pause, RotateCcw, Loader } from 'lucide-react';
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
 
 function App() {
-  const [language, setLanguage] = useState('english');
   const [input, setInput] = useState('');
-  const [hangul, setHangul] = useState('');
+  const [translations, setTranslations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [animating, setAnimating] = useState(false);
-  const [displayText, setDisplayText] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentCharIndex, setCurrentCharIndex] = useState(0);
+  const [displayTexts, setDisplayTexts] = useState([]);
 
-  const languages = [
-    { code: 'english', name: '🇺🇸 English', sample: 'Hello, how are you?' },
-    { code: 'spanish', name: '🇪🇸 Español', sample: 'Hola, ¿cómo estás?' },
-    { code: 'french', name: '🇫🇷 Français', sample: 'Bonjour, comment allez-vous?' },
-    { code: 'german', name: '🇩🇪 Deutsch', sample: 'Hallo, wie geht es dir?' },
-    { code: 'italian', name: '🇮🇹 Italiano', sample: 'Ciao, come stai?' },
-    { code: 'japanese', name: '🇯🇵 日本語', sample: 'こんにちは、元気ですか？' },
-    { code: 'vietnamese', name: '🇻🇳 Tiếng Việt', sample: 'Xin chào, bạn khỏe không?' },
-    { code: 'thai', name: '🇹🇭 ภาษาไทย', sample: 'สวัสดี คุณสบายดีไหม?' }
+  const languageOrder = [
+    { code: 'en', name: 'English', flag: '🇺🇸' },
+    { code: 'ja', name: '日本語', flag: '🇯🇵' },
+    { code: 'vi', name: 'Tiếng Việt', flag: '🇻🇳' },
+    { code: 'th', name: 'ภาษาไทย', flag: '🇹🇭' },
+    { code: 'es', name: 'Español', flag: '🇪🇸' },
+    { code: 'fr', name: 'Français', flag: '🇫🇷' },
+    { code: 'it', name: 'Italiano', flag: '🇮🇹' },
+    { code: 'ko', name: '한국어', flag: '🇰🇷' }
   ];
 
-  const translations = {
-    english: {
-      title: '🌍 Learn Hangul',
-      selectLanguage: 'Select Language',
-      enterText: 'Enter Text',
-      convert: 'Convert to Hangul',
-      converting: 'Converting...',
-      startAnimation: 'Start Animation',
-      pause: 'Pause',
-      restart: 'Restart',
-      newSentence: 'New Sentence'
-    },
-    spanish: {
-      title: '🌍 Aprender Hangul',
-      selectLanguage: 'Seleccionar Idioma',
-      enterText: 'Ingresar Texto',
-      convert: 'Convertir a Hangul',
-      converting: 'Convirtiendo...',
-      startAnimation: 'Iniciar Animación',
-      pause: 'Pausar',
-      restart: 'Reiniciar',
-      newSentence: 'Nueva Oración',
-      backendNote: 'Requiere conexión al servidor'
-    },
-    french: {
-      title: '🌍 Apprendre le Hangul',
-      selectLanguage: 'Sélectionner la Langue',
-      enterText: 'Saisir le Texte',
-      convert: 'Convertir en Hangul',
-      converting: 'Conversion...',
-      startAnimation: 'Démarrer l\'Animation',
-      pause: 'Pause',
-      restart: 'Recommencer',
-      newSentence: 'Nouvelle Phrase',
-      backendNote: 'Connexion au serveur requise'
-    },
-    german: {
-      title: '🌍 Hangul Lernen',
-      selectLanguage: 'Sprache Wählen',
-      enterText: 'Text Eingeben',
-      convert: 'In Hangul Konvertieren',
-      converting: 'Konvertierung...',
-      startAnimation: 'Animation Starten',
-      pause: 'Pause',
-      restart: 'Neu Starten',
-      newSentence: 'Neuer Satz',
-      backendNote: 'Serververbindung erforderlich'
-    },
-    italian: {
-      title: '🌍 Impara l\'Hangul',
-      selectLanguage: 'Seleziona Lingua',
-      enterText: 'Inserisci Testo',
-      convert: 'Converti in Hangul',
-      converting: 'Conversione...',
-      startAnimation: 'Avvia Animazione',
-      pause: 'Pausa',
-      restart: 'Riavvia',
-      newSentence: 'Nuova Frase',
-      backendNote: 'Richiede connessione al server'
-    },
-    japanese: {
-      title: '🌍 ハングルを学ぶ',
-      selectLanguage: '言語を選択',
-      enterText: 'テキストを入力',
-      convert: 'ハングルに変換',
-      converting: '変換中...',
-      startAnimation: 'アニメーション開始',
-      pause: '一時停止',
-      restart: '最初から',
-      newSentence: '新しい文',
-      backendNote: 'サーバー接続が必要'
-    },
-    vietnamese: {
-      title: '🌍 Học Hangul',
-      selectLanguage: 'Chọn Ngôn Ngữ',
-      enterText: 'Nhập Văn Bản',
-      convert: 'Chuyển Sang Hangul',
-      converting: 'Đang Chuyển...',
-      startAnimation: 'Bắt Đầu Hoạt Ảnh',
-      pause: 'Tạm Dừng',
-      restart: 'Khởi Động Lại',
-      newSentence: 'Câu Mới',
-      backendNote: 'Cần kết nối máy chủ'
-    },
-    thai: {
-      title: '🌍 เรียนฮันกึล',
-      selectLanguage: 'เลือกภาษา',
-      enterText: 'ป้อนข้อความ',
-      convert: 'แปลงเป็นฮันกึล',
-      converting: 'กำลังแปลง...',
-      startAnimation: 'เริ่มแอนิเมชัน',
-      pause: 'หยุดชั่วคราว',
-      restart: 'เริ่มใหม่',
-      newSentence: 'ประโยคใหม่',
-      backendNote: 'ต้องเชื่อมต่อเซิร์ฟเวอร์'
-    }
-  };
-
-  const t = translations[language];
-
+  // 한글 자모 분해
   const decomposeHangul = (text) => {
     const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
     const JUNG = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
@@ -156,62 +56,72 @@ function App() {
     return result;
   };
 
-  const convertWithAPI = async () => {
+  // API 호출
+  const translateAll = async () => {
     if (!input.trim()) return;
     
     setLoading(true);
-    setHangul('');
-    setDisplayText('');
-    setCurrentIndex(0);
+    setTranslations([]);
+    setDisplayTexts([]);
+    setCurrentCharIndex(0);
     
     try {
-      const response = await fetch(`${API_URL}/convert`, {
+      const response = await fetch(`${API_URL}/translate-all`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: input, language: language })
+        body: JSON.stringify({ text: input })
       });
 
       const data = await response.json();
       
       if (data.success) {
-        setHangul(data.hangul);
+        setTranslations(data.translations);
+        setDisplayTexts(new Array(data.translations.length).fill(''));
       } else {
-        setHangul('변환 실패: ' + data.error);
+        alert('변환 실패: ' + data.error);
       }
       
       setLoading(false);
     } catch (error) {
-      setHangul('서버 연결 실패. 백엔드가 실행 중인지 확인해주세요.');
+      alert('서버 연결 실패. 백엔드를 확인해주세요.');
       setLoading(false);
     }
   };
 
+  // 동시 애니메이션
   useEffect(() => {
-    if (!animating || !hangul) return;
+    if (!animating || translations.length === 0) return;
     
-    const decomposed = decomposeHangul(hangul);
+    const allDecomposed = translations.map(t => decomposeHangul(t.hangul));
+    const maxLength = Math.max(...allDecomposed.map(d => d.length));
     
-    if (currentIndex < decomposed.length) {
+    if (currentCharIndex < maxLength) {
       const timer = setTimeout(() => {
-        setDisplayText(decomposed[currentIndex]);
-        setCurrentIndex(currentIndex + 1);
-      }, 400);
+        setDisplayTexts(prev => {
+          return allDecomposed.map((decomposed, langIndex) => {
+            return currentCharIndex < decomposed.length 
+              ? decomposed[currentCharIndex] 
+              : decomposed[decomposed.length - 1];
+          });
+        });
+        setCurrentCharIndex(currentCharIndex + 1);
+      }, 300);
       
       return () => clearTimeout(timer);
     } else {
       setAnimating(false);
     }
-  }, [animating, currentIndex, hangul]);
+  }, [animating, currentCharIndex, translations]);
 
   const startAnimation = () => {
-    setDisplayText('');
-    setCurrentIndex(0);
+    setDisplayTexts(new Array(translations.length).fill(''));
+    setCurrentCharIndex(0);
     setAnimating(true);
   };
 
   const resetAnimation = () => {
-    setDisplayText('');
-    setCurrentIndex(0);
+    setDisplayTexts(new Array(translations.length).fill(''));
+    setCurrentCharIndex(0);
     setAnimating(false);
   };
 
@@ -219,108 +129,99 @@ function App() {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-black rounded-3xl shadow-2xl overflow-hidden" style={{ aspectRatio: '9/16' }}>
         
-        {!hangul && (
+        {translations.length === 0 && (
           <div className="h-full flex flex-col p-6">
-            <h1 className="text-3xl font-bold text-white text-center mb-8">
-              {t.title}
+            <h1 className="text-3xl font-bold text-white text-center mb-4">
+              🌍 Learn Hangul
             </h1>
+            <p className="text-gray-400 text-center text-sm mb-8">
+              Type in English, see 9 languages in Hangul!
+            </p>
             
-            <div className="mb-6">
-              <label className="block text-white text-sm font-semibold mb-2">
-                {t.selectLanguage}
-              </label>
-              <select
-                value={language}
-                onChange={(e) => setLanguage(e.target.value)}
-                className="w-full px-4 py-3 bg-gray-800 text-white rounded-lg border border-gray-700 focus:outline-none focus:border-blue-500"
-              >
-                {languages.map(lang => (
-                  <option key={lang.code} value={lang.code}>
-                    {lang.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
             <div className="mb-6 flex-1">
               <label className="block text-white text-sm font-semibold mb-2">
-                {t.enterText}
+                Enter English Text
               </label>
               <textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder={languages.find(l => l.code === language)?.sample}
+                placeholder="Hello, how are you?"
                 className="w-full h-40 px-4 py-3 bg-gray-800 text-white rounded-lg border border-gray-700 focus:outline-none focus:border-blue-500 resize-none"
               />
             </div>
 
             <button
-              onClick={convertWithAPI}
+              onClick={translateAll}
               disabled={loading || !input.trim()}
               className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 text-white font-bold py-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>
                   <Loader className="animate-spin" size={24} />
-                  {t.converting}
+                  Converting...
                 </>
               ) : (
-                t.convert
+                'Convert to Hangul'
               )}
             </button>
           </div>
         )}
 
-        {hangul && (
+        {translations.length > 0 && (
           <div className="h-full flex flex-col">
-            <div className="bg-gray-900 p-6 border-b border-gray-700">
-              <p className="text-white text-lg text-center leading-relaxed">
-                {input}
-              </p>
+            <div className="flex-1 overflow-y-auto p-3">
+              <div className="grid grid-cols-2 gap-2">
+                {translations.map((trans, index) => (
+                  <div key={index} className="bg-gray-900 rounded-lg p-2 border border-gray-700">
+                    <div className="flex items-center gap-1 mb-1">
+                      <span className="text-lg">{languageOrder[index].flag}</span>
+                      <span className="text-gray-400 text-xs">{languageOrder[index].name}</span>
+                    </div>
+                    <div className="text-white text-sm mb-1 line-clamp-2">{trans.text}</div>
+                    <div className="text-blue-400 text-lg font-bold leading-tight">
+                      {displayTexts[index] || (animating ? '' : trans.hangul)}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <div className="flex-1 flex items-center justify-center p-6 overflow-y-auto">
-              <p className="text-white text-2xl font-bold text-center leading-relaxed" style={{ wordBreak: 'keep-all', overflowWrap: 'break-word' }}>
-                {displayText || (animating ? '' : hangul)}
-              </p>
-            </div>
-
-            <div className="p-6 space-y-3">
+            <div className="p-4 space-y-2 border-t border-gray-700">
               {!animating ? (
                 <button
                   onClick={startAnimation}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                  className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
                 >
-                  <Play size={24} />
-                  {t.startAnimation}
+                  <Play size={20} />
+                  Start Animation
                 </button>
               ) : (
                 <button
                   onClick={() => setAnimating(false)}
-                  className="w-full bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                  className="w-full bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-3 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
                 >
-                  <Pause size={24} />
-                  {t.pause}
+                  <Pause size={20} />
+                  Pause
                 </button>
               )}
               
               <button
                 onClick={resetAnimation}
-                className="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                className="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
               >
-                <RotateCcw size={20} />
-                {t.restart}
+                <RotateCcw size={16} />
+                Restart
               </button>
               
               <button
                 onClick={() => {
-                  setHangul('');
+                  setTranslations([]);
                   setInput('');
                   resetAnimation();
                 }}
-                className="w-full bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 rounded-lg transition-colors duration-200"
+                className="w-full bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 rounded-lg transition-colors duration-200"
               >
-                {t.newSentence}
+                New Sentence
               </button>
             </div>
           </div>
