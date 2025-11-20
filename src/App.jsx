@@ -44,58 +44,35 @@ function assemble(cho, jung, jong = '') {
   return String.fromCharCode(code);
 }
 
-// 문장을 자모 단위로 분해
-function disassembleText(text) {
-  const steps = [];
+// 문장을 단계별 표시 배열로 변환 (각 단계마다 완성된 문자열)
+function createTypingSteps(text) {
+  const steps = [''];
+  
   for (let char of text) {
     if (isHangul(char)) {
       const jamos = disassemble(char);
-      steps.push(...jamos);
-    } else {
-      steps.push(char);
-    }
-  }
-  return steps;
-}
-
-// 자모 배열을 점진적으로 조합
-function buildTextFromJamos(jamos, currentStep) {
-  let result = '';
-  let i = 0;
-  
-  while (i < currentStep && i < jamos.length) {
-    const char = jamos[i];
-    
-    // 한글 자모인 경우
-    if (HANGUL.CHO.includes(char)) {
-      // 초성
-      const cho = char;
       
-      // 다음이 중성인지 확인
-      if (i + 1 < currentStep && HANGUL.JUNG.includes(jamos[i + 1])) {
-        const jung = jamos[i + 1];
-        
-        // 다음이 종성인지 확인
-        if (i + 2 < currentStep && HANGUL.JONG.includes(jamos[i + 2]) && jamos[i + 2] !== '') {
-          result += assemble(cho, jung, jamos[i + 2]);
-          i += 3;
-        } else {
-          result += assemble(cho, jung);
-          i += 2;
-        }
-      } else {
-        // 초성만 있는 경우
-        result += cho;
-        i++;
+      // 초성만
+      if (jamos.length >= 1) {
+        steps.push(steps[steps.length - 1] + jamos[0]);
+      }
+      // 초성+중성
+      if (jamos.length >= 2) {
+        const combined = assemble(jamos[0], jamos[1]);
+        steps.push(steps[steps.length - 1].slice(0, -1) + combined);
+      }
+      // 초성+중성+종성
+      if (jamos.length >= 3) {
+        const combined = assemble(jamos[0], jamos[1], jamos[2]);
+        steps.push(steps[steps.length - 1].slice(0, -1) + combined);
       }
     } else {
-      // 한글이 아닌 경우 (공백, 숫자, 특수문자 등)
-      result += char;
-      i++;
+      // 한글이 아닌 문자 (공백, 특수문자 등)
+      steps.push(steps[steps.length - 1] + char);
     }
   }
   
-  return result;
+  return steps.slice(1); // 첫 빈 문자열 제거
 }
 
 function App() {
@@ -129,6 +106,7 @@ function App() {
       }
       
       const data = await response.json();
+      console.log('API Response:', data); // 디버깅용
       
       if (data.success) {
         // 감지된 언어 + 한국어만 필터링
@@ -136,18 +114,21 @@ function App() {
           r.code === data.detectedLanguage || r.code === 'ko'
         );
         
+        console.log('Filtered Results:', filteredResults); // 디버깅용
+        console.log('Detected Language:', data.detectedLanguage); // 디버깅용
+        
         setResults(filteredResults);
         setDetectedLanguage(data.detectedLanguage);
         
-        // 자모 분해하여 애니메이션 준비
+        // 타이핑 단계 생성
         setDisplayResults(filteredResults.map(r => {
-          const jamos = disassembleText(r.pronunciation);
+          const steps = createTypingSteps(r.pronunciation);
           return {
             ...r,
-            jamos,
+            steps,
             displayPronunciation: '',
             currentStep: 0,
-            totalSteps: jamos.length
+            totalSteps: steps.length
           };
         }));
       } else {
@@ -180,13 +161,13 @@ function App() {
       clearInterval(animationRef.current);
     }
     setDisplayResults(results.map(r => {
-      const jamos = disassembleText(r.pronunciation);
+      const steps = createTypingSteps(r.pronunciation);
       return {
         ...r,
-        jamos,
+        steps,
         displayPronunciation: '',
         currentStep: 0,
-        totalSteps: jamos.length
+        totalSteps: steps.length
       };
     }));
   };
@@ -198,11 +179,10 @@ function App() {
         setDisplayResults(prev => {
           const updated = prev.map(item => {
             if (item.currentStep < item.totalSteps) {
-              const newStep = item.currentStep + 1;
               return {
                 ...item,
-                displayPronunciation: buildTextFromJamos(item.jamos, newStep),
-                currentStep: newStep
+                displayPronunciation: item.steps[item.currentStep],
+                currentStep: item.currentStep + 1
               };
             }
             return item;
@@ -217,7 +197,7 @@ function App() {
           
           return updated;
         });
-      }, 150); // 0.15초마다 자모 하나씩
+      }, 150); // 0.15초마다
       
       return () => {
         if (animationRef.current) {
@@ -335,7 +315,7 @@ function App() {
                   
                   {/* 한글 발음 (자모 단위 타이핑) */}
                   <div className="text-2xl font-bold text-blue-300 break-words min-h-[32px] font-mono">
-                    {result.displayPronunciation}
+                    {result.displayPronunciation || result.pronunciation}
                     {isAnimating && result.currentStep < result.totalSteps && (
                       <span className="animate-pulse">|</span>
                     )}
