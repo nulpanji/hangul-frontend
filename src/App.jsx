@@ -44,35 +44,41 @@ function assemble(cho, jung, jong = '') {
   return String.fromCharCode(code);
 }
 
-// 문장을 단계별 표시 배열로 변환 (각 단계마다 완성된 문자열)
+// 타이핑 단계 생성 (각 단계마다 누적된 완성 문자열)
 function createTypingSteps(text) {
-  const steps = [''];
+  const steps = [];
+  let accumulated = '';
   
   for (let char of text) {
     if (isHangul(char)) {
       const jamos = disassemble(char);
       
-      // 초성만
-      if (jamos.length >= 1) {
-        steps.push(steps[steps.length - 1] + jamos[0]);
-      }
-      // 초성+중성
+      // 1단계: 초성만
+      steps.push(accumulated + jamos[0]);
+      
+      // 2단계: 초성+중성
       if (jamos.length >= 2) {
-        const combined = assemble(jamos[0], jamos[1]);
-        steps.push(steps[steps.length - 1].slice(0, -1) + combined);
+        const partial = assemble(jamos[0], jamos[1]);
+        steps.push(accumulated + partial);
       }
-      // 초성+중성+종성
-      if (jamos.length >= 3) {
-        const combined = assemble(jamos[0], jamos[1], jamos[2]);
-        steps.push(steps[steps.length - 1].slice(0, -1) + combined);
+      
+      // 3단계: 완성형 (초성+중성+종성)
+      if (jamos.length === 3) {
+        const complete = assemble(jamos[0], jamos[1], jamos[2]);
+        steps.push(accumulated + complete);
+        accumulated += complete;
+      } else if (jamos.length === 2) {
+        // 종성이 없으면 중성까지만
+        accumulated += assemble(jamos[0], jamos[1]);
       }
     } else {
-      // 한글이 아닌 문자 (공백, 특수문자 등)
-      steps.push(steps[steps.length - 1] + char);
+      // 공백, 특수문자 등
+      accumulated += char;
+      steps.push(accumulated);
     }
   }
   
-  return steps.slice(1); // 첫 빈 문자열 제거
+  return steps;
 }
 
 function App() {
@@ -106,16 +112,31 @@ function App() {
       }
       
       const data = await response.json();
-      console.log('API Response:', data); // 디버깅용
+      
+      console.log('=== API Response ===');
+      console.log('Full data:', data);
+      console.log('Detected language:', data.detectedLanguage);
+      console.log('All results:', data.results);
       
       if (data.success) {
-        // 감지된 언어 + 한국어만 필터링
-        const filteredResults = data.results.filter(r => 
-          r.code === data.detectedLanguage || r.code === 'ko'
-        );
+        // 원본 언어 찾기
+        const sourceResult = data.results.find(r => r.code === data.detectedLanguage);
+        // 한국어 찾기
+        const koreanResult = data.results.find(r => r.code === 'ko');
         
-        console.log('Filtered Results:', filteredResults); // 디버깅용
-        console.log('Detected Language:', data.detectedLanguage); // 디버깅용
+        console.log('Source result:', sourceResult);
+        console.log('Korean result:', koreanResult);
+        
+        // 원본 언어 + 한국어 (한국어가 원본인 경우 한국어만)
+        const filteredResults = [];
+        if (sourceResult && sourceResult.code !== 'ko') {
+          filteredResults.push(sourceResult);
+        }
+        if (koreanResult) {
+          filteredResults.push(koreanResult);
+        }
+        
+        console.log('Filtered results:', filteredResults);
         
         setResults(filteredResults);
         setDetectedLanguage(data.detectedLanguage);
@@ -123,6 +144,7 @@ function App() {
         // 타이핑 단계 생성
         setDisplayResults(filteredResults.map(r => {
           const steps = createTypingSteps(r.pronunciation);
+          console.log(`Steps for ${r.name}:`, steps);
           return {
             ...r,
             steps,
@@ -295,7 +317,7 @@ function App() {
               </button>
             </div>
 
-            {/* 감지된 언어 + 한국어 2개만 표시 */}
+            {/* 입력 언어 + 한국어 2개 표시 */}
             <div className="grid grid-cols-1 gap-4">
               {displayResults.map((result, index) => (
                 <div 
