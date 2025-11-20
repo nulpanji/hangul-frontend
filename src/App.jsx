@@ -11,36 +11,6 @@ function App() {
   const [displayResults, setDisplayResults] = useState([]);
   const animationRef = useRef(null);
 
-  // 한글 자모 분해 함수
-  const decomposeHangul = (text) => {
-    const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
-    const JUNG = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
-    const JONG = ['','ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
-
-    const result = [];
-    for (let char of text) {
-      const code = char.charCodeAt(0);
-      
-      if (code >= 0xAC00 && code <= 0xD7A3) {
-        const offset = code - 0xAC00;
-        const choIndex = Math.floor(offset / 588);
-        const jungIndex = Math.floor((offset % 588) / 28);
-        const jongIndex = offset % 28;
-        
-        result.push(CHO[choIndex]);
-        result.push(CHO[choIndex] + JUNG[jungIndex]);
-        if (jongIndex > 0) {
-          result.push(char);
-        } else {
-          result.push(char);
-        }
-      } else {
-        result.push(char);
-      }
-    }
-    return result;
-  };
-
   // 변환 함수
   const handleConvert = async () => {
     if (!input.trim()) return;
@@ -65,12 +35,12 @@ function App() {
       
       if (data.success) {
         setResults(data.results);
-        // 애니메이션 초기화
+        // 애니메이션 초기화 - 글자 단위로 누적
         setDisplayResults(data.results.map(r => ({
           ...r,
           displayPronunciation: '',
-          steps: decomposeHangul(r.pronunciation),
-          currentStep: 0
+          currentStep: 0,
+          totalLength: r.pronunciation.length
         })));
       } else {
         alert(data.error || '변환에 실패했습니다.');
@@ -104,8 +74,8 @@ function App() {
     setDisplayResults(results.map(r => ({
       ...r,
       displayPronunciation: '',
-      steps: decomposeHangul(r.pronunciation),
-      currentStep: 0
+      currentStep: 0,
+      totalLength: r.pronunciation.length
     })));
   };
 
@@ -115,18 +85,23 @@ function App() {
       animationRef.current = setInterval(() => {
         setDisplayResults(prev => {
           const updated = prev.map(item => {
-            if (item.currentStep < item.steps.length) {
+            if (item.currentStep < item.totalLength) {
+              // 누적해서 표시
               return {
                 ...item,
-                displayPronunciation: item.steps[item.currentStep],
+                displayPronunciation: item.pronunciation.substring(0, item.currentStep + 1),
                 currentStep: item.currentStep + 1
               };
             }
-            return item;
+            // 애니메이션 완료 - 전체 텍스트 표시
+            return {
+              ...item,
+              displayPronunciation: item.pronunciation
+            };
           });
           
           // 모든 애니메이션이 완료되면 중지
-          const allComplete = updated.every(item => item.currentStep >= item.steps.length);
+          const allComplete = updated.every(item => item.currentStep >= item.totalLength);
           if (allComplete) {
             setIsAnimating(false);
             clearInterval(animationRef.current);
@@ -134,7 +109,7 @@ function App() {
           
           return updated;
         });
-      }, 200); // 0.2초마다 한 단계씩
+      }, 100); // 0.1초마다 한 글자씩
       
       return () => {
         if (animationRef.current) {
@@ -148,8 +123,20 @@ function App() {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white flex flex-col">
       {/* 헤더 */}
       <div className="w-full max-w-2xl mx-auto p-6 text-center">
-        <h1 className="text-3xl font-bold mb-2">🌍 Learn Hangul</h1>
+        <h1 className="text-3xl font-bold mb-2">👑 Descendants of King Sejong</h1>
         <p className="text-gray-400 text-sm">Type in English, see it in 8 languages with Hangul!</p>
+        
+        {/* 국기 아이콘 일렬 */}
+        <div className="flex justify-center gap-3 mt-4 text-2xl">
+          <span title="English">🇺🇸</span>
+          <span title="日本語">🇯🇵</span>
+          <span title="Tiếng Việt">🇻🇳</span>
+          <span title="ภาษาไทย">🇹🇭</span>
+          <span title="Español">🇪🇸</span>
+          <span title="Français">🇫🇷</span>
+          <span title="Italiano">🇮🇹</span>
+          <span title="한국어">🇰🇷</span>
+        </div>
       </div>
 
       {/* 입력 영역 */}
