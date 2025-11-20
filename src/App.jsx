@@ -3,6 +3,101 @@ import { Play, Pause, RotateCcw, Loader } from 'lucide-react';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
 
+// 한글 자모 분해/조합 유틸리티
+const HANGUL = {
+  CHO: ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'],
+  JUNG: ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'],
+  JONG: ['','ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ']
+};
+
+// 한글 여부 체크
+function isHangul(char) {
+  const code = char.charCodeAt(0);
+  return code >= 0xAC00 && code <= 0xD7A3;
+}
+
+// 한글 분해
+function disassemble(char) {
+  if (!isHangul(char)) return [char];
+  
+  const code = char.charCodeAt(0) - 0xAC00;
+  const cho = Math.floor(code / 588);
+  const jung = Math.floor((code % 588) / 28);
+  const jong = code % 28;
+  
+  return [
+    HANGUL.CHO[cho],
+    HANGUL.JUNG[jung],
+    jong > 0 ? HANGUL.JONG[jong] : null
+  ].filter(Boolean);
+}
+
+// 한글 조합
+function assemble(cho, jung, jong = '') {
+  const choIdx = HANGUL.CHO.indexOf(cho);
+  const jungIdx = HANGUL.JUNG.indexOf(jung);
+  const jongIdx = jong ? HANGUL.JONG.indexOf(jong) : 0;
+  
+  if (choIdx === -1 || jungIdx === -1 || jongIdx === -1) return '';
+  
+  const code = 0xAC00 + (choIdx * 588) + (jungIdx * 28) + jongIdx;
+  return String.fromCharCode(code);
+}
+
+// 문장을 자모 단위로 분해
+function disassembleText(text) {
+  const steps = [];
+  for (let char of text) {
+    if (isHangul(char)) {
+      const jamos = disassemble(char);
+      steps.push(...jamos);
+    } else {
+      steps.push(char);
+    }
+  }
+  return steps;
+}
+
+// 자모 배열을 점진적으로 조합
+function buildTextFromJamos(jamos, currentStep) {
+  let result = '';
+  let i = 0;
+  
+  while (i < currentStep && i < jamos.length) {
+    const char = jamos[i];
+    
+    // 한글 자모인 경우
+    if (HANGUL.CHO.includes(char)) {
+      // 초성
+      const cho = char;
+      
+      // 다음이 중성인지 확인
+      if (i + 1 < currentStep && HANGUL.JUNG.includes(jamos[i + 1])) {
+        const jung = jamos[i + 1];
+        
+        // 다음이 종성인지 확인
+        if (i + 2 < currentStep && HANGUL.JONG.includes(jamos[i + 2]) && jamos[i + 2] !== '') {
+          result += assemble(cho, jung, jamos[i + 2]);
+          i += 3;
+        } else {
+          result += assemble(cho, jung);
+          i += 2;
+        }
+      } else {
+        // 초성만 있는 경우
+        result += cho;
+        i++;
+      }
+    } else {
+      // 한글이 아닌 경우 (공백, 숫자, 특수문자 등)
+      result += char;
+      i++;
+    }
+  }
+  
+  return result;
+}
+
 function App() {
   const [input, setInput] = useState('');
   const [results, setResults] = useState([]);
@@ -36,16 +131,25 @@ function App() {
       const data = await response.json();
       
       if (data.success) {
-        setResults(data.results);
+        // 감지된 언어 + 한국어만 필터링
+        const filteredResults = data.results.filter(r => 
+          r.code === data.detectedLanguage || r.code === 'ko'
+        );
+        
+        setResults(filteredResults);
         setDetectedLanguage(data.detectedLanguage);
         
-        // 애니메이션 초기화
-        setDisplayResults(data.results.map(r => ({
-          ...r,
-          displayPronunciation: '',
-          currentStep: 0,
-          totalLength: r.pronunciation.length
-        })));
+        // 자모 분해하여 애니메이션 준비
+        setDisplayResults(filteredResults.map(r => {
+          const jamos = disassembleText(r.pronunciation);
+          return {
+            ...r,
+            jamos,
+            displayPronunciation: '',
+            currentStep: 0,
+            totalSteps: jamos.length
+          };
+        }));
       } else {
         alert(data.error || '변환에 실패했습니다.');
       }
@@ -75,34 +179,37 @@ function App() {
     if (animationRef.current) {
       clearInterval(animationRef.current);
     }
-    setDisplayResults(results.map(r => ({
-      ...r,
-      displayPronunciation: '',
-      currentStep: 0,
-      totalLength: r.pronunciation.length
-    })));
+    setDisplayResults(results.map(r => {
+      const jamos = disassembleText(r.pronunciation);
+      return {
+        ...r,
+        jamos,
+        displayPronunciation: '',
+        currentStep: 0,
+        totalSteps: jamos.length
+      };
+    }));
   };
 
-  // 동시 애니메이션 효과
+  // 자모 단위 애니메이션
   useEffect(() => {
     if (isAnimating && displayResults.length > 0) {
       animationRef.current = setInterval(() => {
         setDisplayResults(prev => {
           const updated = prev.map(item => {
-            if (item.currentStep < item.totalLength) {
-              // 누적해서 표시
+            if (item.currentStep < item.totalSteps) {
+              const newStep = item.currentStep + 1;
               return {
                 ...item,
-                displayPronunciation: item.pronunciation.substring(0, item.currentStep + 1),
-                currentStep: item.currentStep + 1
+                displayPronunciation: buildTextFromJamos(item.jamos, newStep),
+                currentStep: newStep
               };
             }
-            // 애니메이션 완료 - 전체 텍스트 유지
             return item;
           });
           
-          // 모든 애니메이션이 완료되면 중지
-          const allComplete = updated.every(item => item.currentStep >= item.totalLength);
+          // 모든 애니메이션 완료 확인
+          const allComplete = updated.every(item => item.currentStep >= item.totalSteps);
           if (allComplete) {
             setIsAnimating(false);
             clearInterval(animationRef.current);
@@ -110,7 +217,7 @@ function App() {
           
           return updated;
         });
-      }, 100); // 0.1초마다 한 글자씩
+      }, 150); // 0.15초마다 자모 하나씩
       
       return () => {
         if (animationRef.current) {
@@ -208,7 +315,7 @@ function App() {
               </button>
             </div>
 
-            {/* 입력 언어 + 한국어 표시 */}
+            {/* 감지된 언어 + 한국어 2개만 표시 */}
             <div className="grid grid-cols-1 gap-4">
               {displayResults.map((result, index) => (
                 <div 
@@ -226,9 +333,12 @@ function App() {
                     {result.translation}
                   </div>
                   
-                  {/* 한글 발음 (크고 굵게) */}
-                  <div className="text-2xl font-bold text-blue-300 break-words min-h-[32px]">
-                    {result.displayPronunciation || result.pronunciation}
+                  {/* 한글 발음 (자모 단위 타이핑) */}
+                  <div className="text-2xl font-bold text-blue-300 break-words min-h-[32px] font-mono">
+                    {result.displayPronunciation}
+                    {isAnimating && result.currentStep < result.totalSteps && (
+                      <span className="animate-pulse">|</span>
+                    )}
                   </div>
                 </div>
               ))}
