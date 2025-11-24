@@ -80,6 +80,12 @@ function App() {
     setIsAnimating(false);
     setDetectedLanguage('');
     
+    // interval 정리
+    if (animationRef.current) {
+      clearInterval(animationRef.current);
+      animationRef.current = null;
+    }
+    
     try {
       const response = await fetch(`${API_URL}/translate-all`, {
         method: 'POST',
@@ -129,28 +135,48 @@ function App() {
   // 애니메이션 토글
   const toggleAnimation = () => {
     if (isAnimating) {
+      // 정지
       setIsAnimating(false);
-      if (animationRef.current) clearInterval(animationRef.current);
+      if (animationRef.current) {
+        clearInterval(animationRef.current);
+        animationRef.current = null;
+      }
     } else {
+      // 시작
       setIsAnimating(true);
     }
   };
 
-  // 리셋
+  // 리셋 - 명확하게 수정
   const resetAnimation = () => {
+    // 1. 애니메이션 중지
     setIsAnimating(false);
-    if (animationRef.current) clearInterval(animationRef.current);
     
-    setDisplayResults(prev => prev.map(r => ({
-      ...r,
+    // 2. Interval 확실히 정리
+    if (animationRef.current) {
+      clearInterval(animationRef.current);
+      animationRef.current = null;
+    }
+    
+    // 3. currentStep을 0으로 초기화
+    setDisplayResults(prev => prev.map(item => ({
+      ...item,
       currentStep: 0
     })));
   };
 
   // 애니메이션 효과
   useEffect(() => {
-    if (!isAnimating || displayResults.length === 0) return;
+    // 애니메이션이 꺼져있거나 데이터가 없으면 종료
+    if (!isAnimating || displayResults.length === 0) {
+      if (animationRef.current) {
+        clearInterval(animationRef.current);
+        animationRef.current = null;
+      }
+      return;
+    }
     
+    // Interval 시작
     animationRef.current = setInterval(() => {
       setDisplayResults(prev => {
         let allComplete = true;
@@ -163,19 +189,23 @@ function App() {
           return item;
         });
         
+        // 모든 애니메이션 완료 시 중지
         if (allComplete) {
           setIsAnimating(false);
-          clearInterval(animationRef.current);
         }
         
         return updated;
       });
     }, 150);
     
+    // Cleanup
     return () => {
-      if (animationRef.current) clearInterval(animationRef.current);
+      if (animationRef.current) {
+        clearInterval(animationRef.current);
+        animationRef.current = null;
+      }
     };
-  }, [isAnimating]);
+  }, [isAnimating, displayResults.length]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white flex flex-col">
@@ -263,30 +293,40 @@ function App() {
             </div>
 
             <div className="grid grid-cols-1 gap-4">
-              {displayResults.map((result, index) => (
-                <div 
-                  key={index} 
-                  className="bg-gray-700 rounded-lg p-4 border border-gray-600"
-                >
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="text-2xl">{result.flag}</span>
-                    <span className="text-sm font-medium text-gray-300">{result.name}</span>
+              {displayResults.map((result, index) => {
+                // 표시할 텍스트 결정
+                let displayText = '';
+                if (result.currentStep === 0) {
+                  // Reset 상태: 완성된 텍스트 표시
+                  displayText = result.pronunciation;
+                } else if (result.currentStep > 0 && result.currentStep <= result.steps.length) {
+                  // 애니메이션 중: 현재 단계 표시
+                  displayText = result.steps[result.currentStep - 1];
+                }
+                
+                return (
+                  <div 
+                    key={index} 
+                    className="bg-gray-700 rounded-lg p-4 border border-gray-600"
+                  >
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-2xl">{result.flag}</span>
+                      <span className="text-sm font-medium text-gray-300">{result.name}</span>
+                    </div>
+                    
+                    <div className="text-sm text-gray-300 mb-3 break-words">
+                      {result.translation}
+                    </div>
+                    
+                    <div className="text-2xl font-bold text-blue-300 break-words min-h-[32px] font-mono">
+                      {displayText}
+                      {isAnimating && result.currentStep > 0 && result.currentStep < result.steps.length && (
+                        <span className="animate-pulse">|</span>
+                      )}
+                    </div>
                   </div>
-                  
-                  <div className="text-sm text-gray-300 mb-3 break-words">
-                    {result.translation}
-                  </div>
-                  
-                  <div className="text-2xl font-bold text-blue-300 break-words min-h-[32px] font-mono">
-                    {result.steps && result.currentStep > 0
-                      ? result.steps[result.currentStep - 1]
-                      : ''}
-                    {isAnimating && result.currentStep < result.steps.length && (
-                      <span className="animate-pulse">|</span>
-                    )}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
