@@ -32,7 +32,7 @@ function assemble(cho, jung, jong = '') {
 }
 
 function createAnimationSteps(text) {
-  const steps = [];
+  const steps = [''];  // 빈 문자열부터 시작
   let result = '';
   
   for (const char of text) {
@@ -50,6 +50,7 @@ function createAnimationSteps(text) {
     }
   }
   
+  steps.push(result); // 마지막 완성형 추가
   return steps;
 }
 
@@ -58,7 +59,7 @@ function App() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [animationStep, setAnimationStep] = useState(0); // 전역 step
+  const [animationStep, setAnimationStep] = useState(0);
   const [detectedLanguage, setDetectedLanguage] = useState('');
   const animationRef = useRef(null);
 
@@ -118,13 +119,21 @@ function App() {
   };
 
   const toggleAnimation = () => {
-    setIsAnimating(!isAnimating);
+    if (isAnimating) {
+      setIsAnimating(false);
+    } else {
+      // Start 누를 때 step이 마지막이면 처음부터
+      if (results.length > 0 && animationStep >= results[0].steps.length - 1) {
+        setAnimationStep(0);
+      }
+      setIsAnimating(true);
+    }
   };
 
   const resetAnimation = () => {
     console.log('🔄 Reset 버튼 클릭!');
     setIsAnimating(false);
-    setAnimationStep(0);
+    setAnimationStep(0);  // 처음(빈 상태)으로
     if (animationRef.current) {
       clearInterval(animationRef.current);
       animationRef.current = null;
@@ -144,7 +153,7 @@ function App() {
     
     animationRef.current = setInterval(() => {
       setAnimationStep(prev => {
-        if (prev >= maxSteps) {
+        if (prev >= maxSteps - 1) {
           setIsAnimating(false);
           return prev;
         }
@@ -244,9 +253,7 @@ function App() {
 
             <div className="grid grid-cols-1 gap-4">
               {results.map((result, index) => {
-                const displayText = animationStep === 0 
-                  ? result.pronunciation 
-                  : (result.steps[animationStep - 1] || result.pronunciation);
+                const displayText = result.steps[animationStep] || '';
                 
                 return (
                   <div 
@@ -264,7 +271,7 @@ function App() {
                     
                     <div className="text-2xl font-bold text-blue-300 break-words min-h-[32px] font-mono">
                       {displayText}
-                      {isAnimating && animationStep > 0 && animationStep < result.steps.length && (
+                      {isAnimating && animationStep < result.steps.length - 1 && (
                         <span className="animate-pulse">|</span>
                       )}
                     </div>
