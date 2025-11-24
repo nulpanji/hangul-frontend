@@ -253,7 +253,10 @@ function App() {
 
             <div className="grid grid-cols-1 gap-4">
               {results.map((result, index) => {
-                const displayText = result.steps[animationStep] || '';
+                // 애니메이션 끝나도 마지막 텍스트 유지
+                const displayText = animationStep >= result.steps.length 
+                  ? result.steps[result.steps.length - 1]
+                  : result.steps[animationStep];
                 
                 return (
                   <div 
