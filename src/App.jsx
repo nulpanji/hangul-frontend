@@ -184,7 +184,7 @@ function App() {
           <span className="text-sm font-medium hidden sm:inline">About</span>
         </button>
 
-        <h1 className="text-3xl font-bold mb-2">👑 Descendants of King Sejong</h1>
+        <h1 className="text-3xl font-bold mb-2">👑 세종의 후예 (Sejong's Heir)</h1>
         <p className="text-gray-400 text-sm">Type in any language, learn Hangul pronunciation!</p>
         
         <div className="flex justify-center gap-3 mt-4 text-2xl">
