@@ -29,7 +29,7 @@ export const aboutContent = {
     paragraphs: [
       "Hầu hết các công cụ học ngôn ngữ dạy bạn một ngôn ngữ mới VÀ một hệ thống chữ viết mới cùng lúc. Chúng tôi tin có cách tốt hơn.",
       
-      "세종의 후예 (Sejong's Heir) cho phép bạn gõ ngôn ngữ mẹ đẻ của mình và ngay lập tức thấy những âm thanh đó được viết như thế nào trong Hangul - bảng chữ cái Hàn Quốc. Bằng cách kết nối những âm thanh bạn đã biết với chữ Hàn, bạn tự nhiên hiểu cách Hangul hoạt động.",
+      "세종의 후예 (Hậu Duệ Của Sejong) cho phép bạn gõ ngôn ngữ mẹ đẻ của mình và ngay lập tức thấy những âm thanh đó được viết như thế nào trong Hangul - bảng chữ cái Hàn Quốc. Bằng cách kết nối những âm thanh bạn đã biết với chữ Hàn, bạn tự nhiên hiểu cách Hangul hoạt động.",
       
       "Xem mỗi ký tự tự xây dựng từng chữ cái một, tiết lộ logic tuyệt vời của cách phụ âm và nguyên âm kết hợp. Đây không phải là về ghi nhớ - mà là về hiểu hệ thống.",
       
@@ -41,7 +41,7 @@ export const aboutContent = {
     paragraphs: [
       "เครื่องมือการเรียนภาษาส่วนใหญ่สอนให้คุณเรียนภาษาใหม่และระบบการเขียนใหม่ไปพร้อมกัน เราเชื่อว่ามีวิธีที่ดีกว่า",
       
-      "세종의 후예 (Sejong's Heir) ให้คุณพิมพ์ภาษาแม่ของคุณเองและเห็นทันทีว่าเสียงเหล่านั้นเขียนอย่างไรในฮันกึล - ตัวอักษรเกาหลี ด้วยการเชื่อมโยงเสียงที่คุณรู้จักอยู่แล้วกับตัวอักษรเกาหลี คุณจะเข้าใจอย่างเป็นธรรมชาติว่าฮันกึลทำงานอย่างไร",
+      "세종의 후예 (ทายาทของเซจง) ให้คุณพิมพ์ภาษาแม่ของคุณเองและเห็นทันทีว่าเสียงเหล่านั้นเขียนอย่างไรในฮันกึล - ตัวอักษรเกาหลี ด้วยการเชื่อมโยงเสียงที่คุณรู้จักอยู่แล้วกับตัวอักษรเกาหลี คุณจะเข้าใจอย่างเป็นธรรมชาติว่าฮันกึลทำงานอย่างไร",
       
       "ดูตัวอักษรแต่ละตัวสร้างตัวเองทีละตัวอักษร เปิดเผยตรรกะที่สง่างามของวิธีที่พยัญชนะและสระผสมกัน นี่ไม่ใช่เรื่องของการจำ แต่เป็นเรื่องของการเข้าใจระบบ",
       
@@ -53,7 +53,7 @@ export const aboutContent = {
     paragraphs: [
       "La mayoría de las herramientas de aprendizaje de idiomas te enseñan un nuevo idioma Y un nuevo sistema de escritura al mismo tiempo. Creemos que hay una mejor manera.",
       
-      "세종의 후예 (Sejong's Heir) te permite escribir en TU idioma nativo y ver instantáneamente cómo se escriben esos sonidos en Hangul - el alfabeto coreano. Al conectar sonidos que ya conoces con letras coreanas, entiendes naturalmente cómo funciona el Hangul.",
+      "세종의 후예 (Heredero de Sejong) te permite escribir en TU idioma nativo y ver instantáneamente cómo se escriben esos sonidos en Hangul - el alfabeto coreano. Al conectar sonidos que ya conoces con letras coreanas, entiendes naturalmente cómo funciona el Hangul.",
       
       "Observa cómo cada carácter se construye letra por letra, revelando la elegante lógica de cómo se combinan consonantes y vocales. Esto no se trata de memorización, se trata de entender el sistema.",
       
@@ -65,7 +65,7 @@ export const aboutContent = {
     paragraphs: [
       "La plupart des outils d'apprentissage des langues enseignent une nouvelle langue ET un nouveau système d'écriture en même temps. Nous pensons qu'il existe une meilleure façon.",
       
-      "세종의 후예 (Sejong's Heir) vous permet de taper dans VOTRE langue maternelle et de voir instantanément comment ces sons s'écrivent en Hangul - l'alphabet coréen. En reliant les sons que vous connaissez déjà aux lettres coréennes, vous comprenez naturellement comment fonctionne le Hangul.",
+      "세종의 후예 (Héritier de Sejong) vous permet de taper dans VOTRE langue maternelle et de voir instantanément comment ces sons s'écrivent en Hangul - l'alphabet coréen. En reliant les sons que vous connaissez déjà aux lettres coréennes, vous comprenez naturellement comment fonctionne le Hangul.",
       
       "Regardez chaque caractère se construire lettre par lettre, révélant la logique élégante de la combinaison des consonnes et des voyelles. Il ne s'agit pas de mémorisation - il s'agit de comprendre le système.",
       
@@ -77,7 +77,7 @@ export const aboutContent = {
     paragraphs: [
       "La maggior parte degli strumenti di apprendimento linguistico insegna una nuova lingua E un nuovo sistema di scrittura contemporaneamente. Crediamo che ci sia un modo migliore.",
       
-      "세종의 후예 (Sejong's Heir) ti permette di digitare nella TUA lingua madre e vedere istantaneamente come quei suoni vengono scritti in Hangul - l'alfabeto coreano. Collegando i suoni che già conosci con le lettere coreane, capisci naturalmente come funziona l'Hangul.",
+      "세종의 후예 (Erede di Sejong) ti permette di digitare nella TUA lingua madre e vedere istantaneamente come quei suoni vengono scritti in Hangul - l'alfabeto coreano. Collegando i suoni che già conosci con le lettere coreane, capisci naturalmente come funziona l'Hangul.",
       
       "Guarda ogni carattere costruirsi lettera per lettera, rivelando l'elegante logica di come si combinano consonanti e vocali. Non si tratta di memorizzazione - si tratta di capire il sistema.",
       
