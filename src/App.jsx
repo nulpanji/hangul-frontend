@@ -122,11 +122,11 @@ function App() {
 
   const toggleAnimation = () => {
     if (isAnimating) {
+      // Pause
       setIsAnimating(false);
     } else {
-      if (results.length > 0 && animationStep >= results[0].steps.length - 1) {
-        setAnimationStep(0);
-      }
+      // Start - 처음부터 시작
+      setAnimationStep(0);
       setIsAnimating(true);
     }
   };
@@ -135,6 +135,8 @@ function App() {
     console.log('🔄 Reset 버튼 클릭!');
     setIsAnimating(false);
     setAnimationStep(0);
+    setResults([]); // 결과 완전히 삭제
+    setDetectedLanguage('');
     if (animationRef.current) {
       clearInterval(animationRef.current);
       animationRef.current = null;
@@ -174,7 +176,6 @@ function App() {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white flex flex-col">
       {/* 헤더 */}
       <div className="w-full max-w-2xl mx-auto p-6 text-center relative">
-        {/* About 버튼 - 오른쪽 상단 */}
         <button
           onClick={() => setIsAboutOpen(true)}
           className="absolute top-6 right-6 bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-lg transition-colors flex items-center gap-2"
@@ -184,7 +185,7 @@ function App() {
           <span className="text-sm font-medium hidden sm:inline">About</span>
         </button>
 
-        <h1 className="text-3xl font-bold mb-2">👑 세종의 후예 </h1>
+        <h1 className="text-3xl font-bold mb-2">👑 세종의 후예 (Sejong's Heir)</h1>
         <p className="text-gray-400 text-sm">Type in any language, learn Hangul pronunciation!</p>
         
         <div className="flex justify-center gap-3 mt-4 text-2xl">
@@ -267,9 +268,15 @@ function App() {
 
             <div className="grid grid-cols-1 gap-4">
               {results.map((result, index) => {
-                const displayText = animationStep >= result.steps.length 
-                  ? result.steps[result.steps.length - 1]
-                  : result.steps[animationStep];
+                // 표시 로직 수정
+                let displayText;
+                if (!isAnimating) {
+                  // 애니메이션 중이 아니면 완성된 텍스트
+                  displayText = result.pronunciation;
+                } else {
+                  // 애니메이션 중이면 현재 step
+                  displayText = result.steps[animationStep] || result.pronunciation;
+                }
                 
                 return (
                   <div 
