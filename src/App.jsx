@@ -178,11 +178,11 @@ function App() {
       <div className="w-full max-w-2xl mx-auto p-6 text-center relative">
         <button
           onClick={() => setIsAboutOpen(true)}
-          className="absolute top-6 right-6 bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-lg transition-colors flex items-center gap-2"
+          className="absolute top-6 right-6 bg-gray-700 hover:bg-gray-600 text-white px-3 py-2 rounded-lg transition-colors flex items-center gap-2 border border-gray-600"
           title="About"
         >
           <Info className="w-5 h-5" />
-          <span className="text-sm font-medium hidden sm:inline">About</span>
+          <span className="text-sm font-medium">About</span>
         </button>
 
         <h1 className="text-3xl font-bold mb-2">👑 세종의 후예 (Sejong's Heir)</h1>
