@@ -1,99 +1,99 @@
 // src/aboutContent.js
 export const aboutContent = {
   en: {
-    title: "Discover Hangul Through Your Own Language",
+    title: "Learn Hangul Instantly, Using Your Own Language",
     paragraphs: [
-      "Most language learning tools teach you a new language AND a new writing system at the same time. We believe there's a better way.",
+      "Most learning tools introduce language and script at the same time. But I choose a different starting point — a sound-first approach.",
       
-      "세종의 후예 (Sejong's Heir) lets you type in YOUR native language and instantly see how those sounds are written in Hangul - the Korean alphabet. By connecting sounds you already know with Korean letters, you naturally understand how Hangul works.",
+      "Type a word in your native language, and 세종의 후예 (Sejong's Heir) instantly shows how that sound is written in Hangul. As you connect familiar sounds with Hangul consonants and vowels, you'll naturally reach that moment: \"Oh, so THIS is how Hangul works!\"",
       
-      "Watch as each character builds itself letter-by-letter, revealing the elegant logic of how consonants and vowels combine. This isn't about memorization - it's about understanding the system.",
+      "Watch how each character is built from consonant + vowel. Once you understand the elegant system created by King Sejong, Hangul doesn't need memorization. It simply begins to make sense.",
       
-      "Whether you speak English, Japanese, Vietnamese, Thai, Spanish, French, or Italian, you can start reading and writing Hangul today by simply expressing the sounds of your own language."
+      "English, Japanese, Vietnamese, Thai, Spanish, French, Italian… No matter what language you speak, if you can type its sounds, you can start reading and writing Hangul today. This is the method of 세종의 후예 (Sejong's Heir)."
     ]
   },
   ja: {
-    title: "あなたの言語でハングルを学ぼう",
+    title: "あなたの母語だけで、今すぐハングルを学べます",
     paragraphs: [
-      "ほとんどの言語学習ツールは、新しい言語と新しい文字システムを同時に教えます。しかし、もっと良い方法があると私たちは信じています。",
+      "多くの学習ツールは、言語と文字を同時に提示して学習を始めます。しかし私は、それよりも「音」から始めるアプローチを選びました。",
       
-      "「세종의 후예（世宗の後裔）」では、あなたの母国語を入力するだけで、その音がハングル（韓国文字）でどのように書かれるかを即座に確認できます。すでに知っている音と韓国文字を結びつけることで、自然にハングルの仕組みを理解できます。",
+      "세종의 후예（世宗の後裔）に母語の単語を入力すると、その音がハングルでどのように表記されるかを瞬時に知ることができます。親しみのある音とハングルの子音・母音がつながっていくと、「なるほど、ハングルはこうやって仕組まれているんだ！」という瞬間が訪れます。",
       
-      "各文字が一文字ずつ組み立てられる様子を見ながら、子音と母音が組み合わさる洗練された論理を発見してください。これは暗記ではありません。システムを理解することです。",
+      "ハングルが子音＋母音で組み立てられる様子を目で確かめてください。世宗大王が作り上げたこの論理を理解すれば、暗記は必要ありません。自然に\"読める\"ようになります。",
       
-      "英語、日本語、ベトナム語、タイ語、スペイン語、フランス語、イタリア語のいずれを話す方でも、自分の言語の音を表現するだけで、今日からハングルの読み書きを始められます。"
+      "英語、日本語、ベトナム語、タイ語、スペイン語、フランス語、イタリア語…どの言語でも大丈夫。母語の音を入力するだけで、今日からハングルを読んで書けるようになります。これが세종의 후예（世宗の後裔）のメソッドです。"
     ]
   },
   vi: {
-    title: "Khám Phá Chữ Hàn Qua Ngôn Ngữ Của Bạn",
+    title: "Học Hangul Ngay Lập Tức Bằng Chính Ngôn Ngữ Của Bạn",
     paragraphs: [
-      "Hầu hết các công cụ học ngôn ngữ dạy bạn một ngôn ngữ mới VÀ một hệ thống chữ viết mới cùng lúc. Chúng tôi tin có cách tốt hơn.",
+      "Hầu hết công cụ học tập đều bắt đầu bằng cách giới thiệu ngôn ngữ và chữ viết cùng lúc. Còn tôi chọn một cách khác — bắt đầu từ âm thanh.",
       
-      "세종의 후예 (Hậu Duệ Của Sejong) cho phép bạn gõ ngôn ngữ mẹ đẻ của mình và ngay lập tức thấy những âm thanh đó được viết như thế nào trong Hangul - bảng chữ cái Hàn Quốc. Bằng cách kết nối những âm thanh bạn đã biết với chữ Hàn, bạn tự nhiên hiểu cách Hangul hoạt động.",
+      "Chỉ cần nhập một từ trong tiếng mẹ đẻ, 세종의 후예 (Hậu Duệ Sejong) sẽ hiển thị ngay âm đó được viết bằng Hangul như thế nào. Khi bạn nối các âm quen thuộc với phụ âm và nguyên âm Hangul, sẽ có khoảnh khắc: \"À, hóa ra Hangul hoạt động thế này!\"",
       
-      "Xem mỗi ký tự tự xây dựng từng chữ cái một, tiết lộ logic tuyệt vời của cách phụ âm và nguyên âm kết hợp. Đây không phải là về ghi nhớ - mà là về hiểu hệ thống.",
+      "Hãy xem từng ký tự được tạo nên từ phụ âm + nguyên âm. Khi hiểu được hệ thống tinh tế do vua Sejong tạo ra, bạn không cần phải học thuộc. Hangul sẽ tự nhiên trở nên rõ ràng.",
       
-      "Dù bạn nói tiếng Anh, Nhật, Việt, Thái, Tây Ban Nha, Pháp hay Ý, bạn có thể bắt đầu đọc và viết Hangul ngay hôm nay chỉ bằng cách thể hiện âm thanh của ngôn ngữ riêng mình."
+      "Tiếng Anh, Nhật, Việt, Thái, Tây Ban Nha, Pháp, Ý… Bất kể bạn nói ngôn ngữ nào, chỉ cần nhập âm thanh của tiếng đó, bạn có thể đọc và viết Hangul ngay hôm nay. Đó là phương pháp của 세종의 후예 (Hậu Duệ Sejong)."
     ]
   },
   th: {
-    title: "ค้นพบฮันกึลผ่านภาษาของคุณเอง",
+    title: "เรียนฮันกึลได้ทันที ด้วยภาษาของคุณเอง",
     paragraphs: [
-      "เครื่องมือการเรียนภาษาส่วนใหญ่สอนให้คุณเรียนภาษาใหม่และระบบการเขียนใหม่ไปพร้อมกัน เราเชื่อว่ามีวิธีที่ดีกว่า",
+      "เครื่องมือการเรียนรู้ส่วนใหญ่มักเริ่มต้นด้วยการให้คุณเรียนภาษาและตัวอักษรพร้อมกัน แต่ฉันเลือกอีกเส้นทางหนึ่ง — เส้นทางที่เริ่มจาก \"เสียง\" ก่อน",
       
-      "세종의 후예 (ทายาทของเซจง) ให้คุณพิมพ์ภาษาแม่ของคุณเองและเห็นทันทีว่าเสียงเหล่านั้นเขียนอย่างไรในฮันกึล - ตัวอักษรเกาหลี ด้วยการเชื่อมโยงเสียงที่คุณรู้จักอยู่แล้วกับตัวอักษรเกาหลี คุณจะเข้าใจอย่างเป็นธรรมชาติว่าฮันกึลทำงานอย่างไร",
+      "เพียงพิมพ์คำในภาษาแม่ของคุณ 세종의 후예 (ทายาทของเซจง) จะแสดงทันทีว่าเสียงนั้นเขียนด้วยฮันกึลอย่างไร เมื่อคุณเชื่อมเสียงที่คุ้นเคยกับพยัญชนะและสระของฮันกึล จะมีจังหวะที่คุณพูดว่า: \"อ้อ! ฮันกึลทำงานแบบนี้เอง!\"",
       
-      "ดูตัวอักษรแต่ละตัวสร้างตัวเองทีละตัวอักษร เปิดเผยตรรกะที่สง่างามของวิธีที่พยัญชนะและสระผสมกัน นี่ไม่ใช่เรื่องของการจำ แต่เป็นเรื่องของการเข้าใจระบบ",
+      "ลองดูว่าตัวอักษรแต่ละตัวประกอบจากพยัญชนะ + สระอย่างไร เมื่อเข้าใจระบบที่กษัตริย์เซจงสร้างขึ้น คุณไม่จำเป็นต้องท่องจำเลย ฮันกึลจะเริ่ม 'อ่านออก' โดยธรรมชาติ",
       
-      "ไม่ว่าคุณจะพูดภาษาอังกฤษ ญี่ปุ่น เวียดนาม ไทย สเปน ฝรั่งเศส หรืออิตาลี คุณสามารถเริ่มอ่านและเขียนฮันกึลได้ตั้งแต่วันนี้เพียงแค่แสดงเสียงของภาษาของคุณเอง"
+      "อังกฤษ ญี่ปุ่น เวียดนาม ไทย สเปน ฝรั่งเศส อิตาลี… ไม่ว่าคุณจะพูดภาษาอะไร แค่พิมพ์เสียงของภาษานั้น คุณก็เริ่มอ่านและเขียนฮันกึลได้ทันทีวันนี้ นี่คือวิธีของ 세종의 후예 (ทายาทของเซจง)"
     ]
   },
   es: {
-    title: "Descubre el Hangul a Través de Tu Propio Idioma",
+    title: "Aprende Hangul Al Instante Usando Tu Propio Idioma",
     paragraphs: [
-      "La mayoría de las herramientas de aprendizaje de idiomas te enseñan un nuevo idioma Y un nuevo sistema de escritura al mismo tiempo. Creemos que hay una mejor manera.",
+      "La mayoría de las herramientas empiezan mostrando el idioma y el sistema de escritura al mismo tiempo. Yo prefiero comenzar desde otro lugar: el sonido.",
       
-      "세종의 후예 (Heredero de Sejong) te permite escribir en TU idioma nativo y ver instantáneamente cómo se escriben esos sonidos en Hangul - el alfabeto coreano. Al conectar sonidos que ya conoces con letras coreanas, entiendes naturalmente cómo funciona el Hangul.",
+      "Escribe una palabra en tu lengua y 세종의 후예 (Heredero de Sejong) te mostrará al instante cómo se representa ese sonido en Hangul. Al conectar sonidos familiares con las consonantes y vocales del Hangul, llega ese momento: \"¡Ah, así funciona el Hangul!\"",
       
-      "Observa cómo cada carácter se construye letra por letra, revelando la elegante lógica de cómo se combinan consonantes y vocales. Esto no se trata de memorización, se trata de entender el sistema.",
+      "Observa cómo cada letra se forma a partir de consonante + vocal. Cuando comprendes el sistema elegante creado por el Rey Sejong, ya no necesitas memorizar. El Hangul simplemente empieza a tener sentido.",
       
-      "Ya sea que hables inglés, japonés, vietnamita, tailandés, español, francés o italiano, puedes comenzar a leer y escribir Hangul hoy simplemente expresando los sonidos de tu propio idioma."
+      "Inglés, japonés, vietnamita, tailandés, español, francés, italiano… Da igual qué idioma hables: si puedes escribir sus sonidos, hoy mismo puedes comenzar a leer y escribir Hangul. Ese es el método de 세종의 후예 (Heredero de Sejong)."
     ]
   },
   fr: {
-    title: "Découvrez le Hangul à Travers Votre Propre Langue",
+    title: "Apprenez le Hangeul Immédiatement, À Partir de Votre Propre Langue",
     paragraphs: [
-      "La plupart des outils d'apprentissage des langues enseignent une nouvelle langue ET un nouveau système d'écriture en même temps. Nous pensons qu'il existe une meilleure façon.",
+      "La plupart des outils d'apprentissage présentent la langue et l'alphabet en même temps. Mais je choisis une autre voie — une approche centrée sur le son.",
       
-      "세종의 후예 (Héritier de Sejong) vous permet de taper dans VOTRE langue maternelle et de voir instantanément comment ces sons s'écrivent en Hangul - l'alphabet coréen. En reliant les sons que vous connaissez déjà aux lettres coréennes, vous comprenez naturellement comment fonctionne le Hangul.",
+      "Tapez un mot dans votre langue, et 세종의 후예 (Héritier de Sejong) vous montre instantanément comment son son se transcrit en hangeul. En reliant des sons familiers aux consonnes et voyelles du hangeul, vous aurez ce moment : \"Ah, voilà comment fonctionne le hangeul !\"",
       
-      "Regardez chaque caractère se construire lettre par lettre, révélant la logique élégante de la combinaison des consonnes et des voyelles. Il ne s'agit pas de mémorisation - il s'agit de comprendre le système.",
+      "Observez comment chaque caractère se construit à partir d'une consonne + voyelle. Une fois la logique élégante conçue par le Roi Sejong comprise, vous n'avez plus besoin de mémoriser. Le hangeul devient naturellement clair.",
       
-      "Que vous parliez anglais, japonais, vietnamien, thaï, espagnol, français ou italien, vous pouvez commencer à lire et écrire le Hangul aujourd'hui simplement en exprimant les sons de votre propre langue."
+      "Anglais, japonais, vietnamien, thaï, espagnol, français, italien… Peu importe votre langue : si vous pouvez en taper les sons, vous pouvez commencer à lire et écrire le hangeul dès aujourd'hui. C'est la méthode de 세종의 후예 (Héritier de Sejong)."
     ]
   },
   it: {
-    title: "Scopri l'Hangul Attraverso la Tua Lingua",
+    title: "Impara l'Hangul Subito, Usando la Tua Lingua",
     paragraphs: [
-      "La maggior parte degli strumenti di apprendimento linguistico insegna una nuova lingua E un nuovo sistema di scrittura contemporaneamente. Crediamo che ci sia un modo migliore.",
+      "La maggior parte degli strumenti presenta lingua e scrittura allo stesso tempo. Io preferisco un punto di partenza diverso — un approccio basato sul suono.",
       
-      "세종의 후예 (Erede di Sejong) ti permette di digitare nella TUA lingua madre e vedere istantaneamente come quei suoni vengono scritti in Hangul - l'alfabeto coreano. Collegando i suoni che già conosci con le lettere coreane, capisci naturalmente come funziona l'Hangul.",
+      "Scrivi una parola nella tua lingua e 세종의 후예 (Erede di Sejong) ti mostrerà immediatamente come quel suono viene reso in Hangul. Collegando suoni familiari con consonanti e vocali dell'Hangul, arriverà il momento: \"Ah, quindi funziona così!\"",
       
-      "Guarda ogni carattere costruirsi lettera per lettera, rivelando l'elegante logica di come si combinano consonanti e vocali. Non si tratta di memorizzazione - si tratta di capire il sistema.",
+      "Guarda come ogni carattere nasce da consonante + vocale. Quando comprendi il sistema elegante creato dal Re Sejong, non serve più memorizzare. L'Hangul inizia semplicemente a rivelarsi.",
       
-      "Che tu parli inglese, giapponese, vietnamita, tailandese, spagnolo, francese o italiano, puoi iniziare a leggere e scrivere l'Hangul oggi semplicemente esprimendo i suoni della tua lingua."
+      "Inglese, giapponese, vietnamita, thailandese, spagnolo, francese, italiano… Non importa quale lingua parli: se puoi digitarne i suoni, puoi iniziare a leggere e scrivere l'Hangul già oggi. Questa è la via di 세종의 후예 (Erede di Sejong)."
     ]
   },
   ko: {
-    title: "당신의 언어로 한글을 배워보세요",
+    title: "당신의 언어로, 지금 바로 한글을 배워보세요",
     paragraphs: [
-      "대부분의 언어 학습 도구는 새로운 언어와 새로운 문자 체계를 동시에 가르칩니다. 우리는 더 나은 방법이 있다고 믿습니다.",
+      "많은 학습 도구는 언어와 문자를 동시에 보여주며 출발합니다. 하지만 나는 그보다 더 '소리 중심'의 출발을 선택했습니다.",
       
-      "「세종의 후예」는 당신의 모국어를 입력하면 그 소리가 한글로 어떻게 표기되는지 즉시 보여줍니다. 이미 알고 있는 소리와 한글 자모를 연결함으로써, 자연스럽게 한글의 작동 원리를 이해하게 됩니다.",
+      "「세종의 후예」는 당신의 모국어를 입력하면, 그 소리가 한글에서 어떻게 표현되는지 즉시 보여줍니다. 이미 알고 있는 발음에 한글 자모를 하나씩 연결해 가며, 자연스럽게 \"아, 한글이 이렇게 돌아가는구나!\" 하고 감이 오는 순간을 느끼게 될 거예요.",
       
-      "각 글자가 자모 단위로 조립되는 과정을 보면서, 자음과 모음이 결합하는 우아한 논리를 발견하세요. 이것은 암기가 아닙니다. 시스템을 이해하는 것입니다.",
+      "각 글자가 자음 + 모음으로 조립되는 과정을 직접 눈으로 확인해보세요. 세종대왕이 만든 이 정교한 원리를 이해하면, 한글은 외울 필요가 없습니다. 그냥 '보이기' 시작합니다.",
       
-      "영어, 일본어, 베트남어, 태국어, 스페인어, 프랑스어, 이탈리아어 중 어떤 언어를 사용하든, 당신의 언어 소리를 표현하는 것만으로 오늘부터 한글을 읽고 쓸 수 있습니다."
+      "영어, 일본어, 베트남어, 태국어, 스페인어, 프랑스어, 이탈리아어… 어떤 언어를 쓰든 괜찮아요. 당신의 언어 소리만 입력하면, 오늘부터 한글을 읽고 쓸 수 있습니다. 이것이 바로 「세종의 후예」만의 방식입니다."
     ]
   }
 };
