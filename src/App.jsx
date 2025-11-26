@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, Pause, RotateCcw, Loader } from 'lucide-react';
+import { Play, Pause, RotateCcw, Loader, Info } from 'lucide-react';
+import AboutModal from './AboutModal';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
 
@@ -32,7 +33,7 @@ function assemble(cho, jung, jong = '') {
 }
 
 function createAnimationSteps(text) {
-  const steps = [''];  // 빈 문자열부터 시작
+  const steps = [''];
   let result = '';
   
   for (const char of text) {
@@ -50,7 +51,7 @@ function createAnimationSteps(text) {
     }
   }
   
-  steps.push(result); // 마지막 완성형 추가
+  steps.push(result);
   return steps;
 }
 
@@ -61,6 +62,7 @@ function App() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [animationStep, setAnimationStep] = useState(0);
   const [detectedLanguage, setDetectedLanguage] = useState('');
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
   const animationRef = useRef(null);
 
   const handleConvert = async () => {
@@ -122,7 +124,6 @@ function App() {
     if (isAnimating) {
       setIsAnimating(false);
     } else {
-      // Start 누를 때 step이 마지막이면 처음부터
       if (results.length > 0 && animationStep >= results[0].steps.length - 1) {
         setAnimationStep(0);
       }
@@ -133,7 +134,7 @@ function App() {
   const resetAnimation = () => {
     console.log('🔄 Reset 버튼 클릭!');
     setIsAnimating(false);
-    setAnimationStep(0);  // 처음(빈 상태)으로
+    setAnimationStep(0);
     if (animationRef.current) {
       clearInterval(animationRef.current);
       animationRef.current = null;
@@ -171,7 +172,18 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white flex flex-col">
-      <div className="w-full max-w-2xl mx-auto p-6 text-center">
+      {/* 헤더 */}
+      <div className="w-full max-w-2xl mx-auto p-6 text-center relative">
+        {/* About 버튼 - 오른쪽 상단 */}
+        <button
+          onClick={() => setIsAboutOpen(true)}
+          className="absolute top-6 right-6 bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-lg transition-colors flex items-center gap-2"
+          title="About"
+        >
+          <Info className="w-5 h-5" />
+          <span className="text-sm font-medium hidden sm:inline">About</span>
+        </button>
+
         <h1 className="text-3xl font-bold mb-2">👑 Descendants of King Sejong</h1>
         <p className="text-gray-400 text-sm">Type in any language, learn Hangul pronunciation!</p>
         
@@ -187,6 +199,7 @@ function App() {
         </div>
       </div>
 
+      {/* 입력 */}
       <div className="w-full max-w-2xl mx-auto px-6 mb-6">
         <div className="bg-gray-800 rounded-lg p-4 shadow-lg">
           <label className="block text-sm font-medium mb-2 text-gray-300">
@@ -216,6 +229,7 @@ function App() {
         </div>
       </div>
 
+      {/* 결과 */}
       {results.length > 0 && (
         <div className="flex-1 w-full max-w-2xl mx-auto px-6 pb-6">
           <div className="bg-gray-800 rounded-lg p-4 shadow-lg">
@@ -253,7 +267,6 @@ function App() {
 
             <div className="grid grid-cols-1 gap-4">
               {results.map((result, index) => {
-                // 애니메이션 끝나도 마지막 텍스트 유지
                 const displayText = animationStep >= result.steps.length 
                   ? result.steps[result.steps.length - 1]
                   : result.steps[animationStep];
@@ -285,6 +298,12 @@ function App() {
           </div>
         </div>
       )}
+
+      {/* About Modal */}
+      <AboutModal 
+        isOpen={isAboutOpen} 
+        onClose={() => setIsAboutOpen(false)} 
+      />
     </div>
   );
 }
