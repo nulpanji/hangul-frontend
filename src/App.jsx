@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Play, Pause, RotateCcw, Loader, Info, Volume2 } from 'lucide-react';
 import AboutModal from './AboutModal';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+const API_URL = process.env.REACT_APP_API_URL || 'https://hangul-backend.vercel.app/api';
 
 // 한글 자모 상수
 const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
@@ -124,10 +124,12 @@ function App() {
           filteredResults.push(koreanResult);
         }
         
-        const withSteps = filteredResults.map(r => ({
-          ...r,
-          steps: createAnimationSteps(r.pronunciation)
-        }));
+       const withSteps = filteredResults.map(r => ({
+  ...r,
+  steps: createAnimationSteps(
+    r.code === 'ko' ? r.translation : r.pronunciation
+  )
+}));
         
         setResults(withSteps);
         setDetectedLanguage(data.detectedLanguage);
@@ -327,7 +329,7 @@ function App() {
                         }`}
                       >
                         <Volume2 className="w-5 h-5" />
-                        {isSpeaking ? '중지' : '발음 듣기'}
+                        {isSpeaking ? 'Stop' : 'Listen'}
                       </button>
                     )}
                   </div>
