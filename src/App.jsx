@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, Pause, RotateCcw, Loader, Info } from 'lucide-react';
+import { Play, Pause, RotateCcw, Loader, Info, Volume2 } from 'lucide-react';
 import AboutModal from './AboutModal';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
@@ -63,7 +63,29 @@ function App() {
   const [animationStep, setAnimationStep] = useState(0);
   const [detectedLanguage, setDetectedLanguage] = useState('');
   const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const animationRef = useRef(null);
+
+  // 한국어 발음 재생 함수
+  const speakKorean = (text) => {
+    // 이미 재생 중이면 중지
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'ko-KR';
+    utterance.rate = 0.9; // 속도 (0.1 ~ 10)
+    utterance.pitch = 1; // 음높이 (0 ~ 2)
+    
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+    
+    window.speechSynthesis.speak(utterance);
+  };
 
   const handleConvert = async () => {
     if (!input.trim()) return;
@@ -122,10 +144,8 @@ function App() {
 
   const toggleAnimation = () => {
     if (isAnimating) {
-      // Pause
       setIsAnimating(false);
     } else {
-      // Start - 처음부터 시작
       setAnimationStep(0);
       setIsAnimating(true);
     }
@@ -135,7 +155,7 @@ function App() {
     console.log('🔄 Reset 버튼 클릭!');
     setIsAnimating(false);
     setAnimationStep(0);
-    setResults([]); // 결과 완전히 삭제
+    setResults([]);
     setDetectedLanguage('');
     if (animationRef.current) {
       clearInterval(animationRef.current);
@@ -268,13 +288,10 @@ function App() {
 
             <div className="grid grid-cols-1 gap-4">
               {results.map((result, index) => {
-                // 표시 로직 수정
                 let displayText;
                 if (!isAnimating) {
-                  // 애니메이션 중이 아니면 완성된 텍스트
                   displayText = result.pronunciation;
                 } else {
-                  // 애니메이션 중이면 현재 step
                   displayText = result.steps[animationStep] || result.pronunciation;
                 }
                 
@@ -298,6 +315,21 @@ function App() {
                         <span className="animate-pulse">|</span>
                       )}
                     </div>
+
+                    {/* 한국어일 때만 발음 듣기 버튼 표시 */}
+                    {result.code === 'ko' && (
+                      <button
+                        onClick={() => speakKorean(result.translation)}
+                        className={`mt-3 w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg transition-colors font-medium ${
+                          isSpeaking
+                            ? 'bg-red-600 hover:bg-red-700 text-white'
+                            : 'bg-blue-600 hover:bg-blue-700 text-white'
+                        }`}
+                      >
+                        <Volume2 className="w-5 h-5" />
+                        {isSpeaking ? '중지' : '발음 듣기'}
+                      </button>
+                    )}
                   </div>
                 );
               })}
